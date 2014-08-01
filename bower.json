@@ -1,0 +1,21 @@
+{
+  "name": "togu",
+  "version": "0.0.1",
+  "homepage": "http://togu.io",
+  "authors": [
+    "Alessandro Siragusa <alessandro.siragusa@gmail.com>"
+  ],
+  "description": "Togu CMS",
+  "keywords": [
+    "Togu",
+    "CMS"
+  ],
+  "license": "GPL v3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
