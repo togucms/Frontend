@@ -51,8 +51,8 @@ App.SiteController = Ext.extend(App.BaseClass, {
 		
 		me.page = page;
 
-		while(section = section.sectionConfig ? section.sectionConfig.parentSection: null) {
-			sections.unshift(section);
+		while(section = section.sectionConfig ? this.resourceManager.getModel(section.sectionConfig.parentSection): null) {
+			sections.unshift(section.id);
 		}
 		sections.shift();
 		
