@@ -101,11 +101,10 @@ App.ImageManager = Ext.extend(App.BaseClass, {
     			id: id
     		},
     		success: jQuery.proxy(function(response) {
-    			this.processImage(id, response);
+    			this.defineImage(id, response.media[0]);
     			callback.call(scope, this.images[id]);
     		}, this)
     	});
-
 		
 	},
 
