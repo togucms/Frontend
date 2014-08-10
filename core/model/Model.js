@@ -113,7 +113,7 @@ App.model.Model = Ext.extend(App.BaseClass, {
 			field = fields[i];
 			fieldName = field.name;
 			value = me.values[fieldName] || data[fieldName] || field.defaultValue;
-			if(fields[i].type == "reference") {
+			if(fields[i].type == "reference" && value) {
 				me.models[fieldName].splice.apply(me.models[fieldName], [0,0].concat(value))
 			} else {
 				me.values[fieldName] = value;
