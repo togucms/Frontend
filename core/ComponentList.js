@@ -191,11 +191,9 @@ App.ComponentList = Ext.extend(Ext.extend(Array, Ext.util.Observable.prototype),
 	getData: function() {
 		var data = [];
 		this.each(function(object, index) {
-			data.push({
-				id: object.id,
-				type: object.type
-			});
+			data.push(object.id);
 		}, this);
+		return data;
 	},
 	
 	findByFn: function(callback, scope) {

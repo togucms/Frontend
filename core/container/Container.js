@@ -92,6 +92,7 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 			if(type.partial) {
 				config.type = type.partial;
 				config.partial = true
+				config.className = type.className || "App.component.Component";
 				return config;
 			}
 			config.type = type.component;
@@ -181,6 +182,8 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 		}
 		this.splice(position, models.length);
 		this.update();
+		
+		this.fireEvent('remove');
 	},
 	
 	rearrange: function(models) {
@@ -202,6 +205,8 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 		}
 		
 		me.update();
+		
+		this.fireEvent('rearrange');
 	},
 	
 	update: function() {

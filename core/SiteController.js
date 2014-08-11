@@ -51,12 +51,15 @@ App.SiteController = Ext.extend(App.BaseClass, {
 		
 		me.page = page;
 
-		while(section = section.sectionConfig ? this.resourceManager.getModel(section.sectionConfig.parentSection): null) {
+		while(section.sectionConfig) {
+			section = this.resourceManager.getModel(section.sectionConfig.parentSection);
 			sections.unshift(section.id);
 		}
 		sections.shift();
 		
 		me.rootModel.set('page', page);
+		
+		document.title = page.title;
 		me.rootModel.loadSection(sections);
 	}
 });

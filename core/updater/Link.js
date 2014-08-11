@@ -27,7 +27,8 @@ App.updater.Link = Ext.extend(App.updater.Attr, {
 		this.bus.on('link.dd.end', this.onDDEnd, this);
 	},
 	
-	onClick:function() {
+	onClick:function(event) {
+		event.preventDefault();
 		History.add(this.getElement().attr('href'));
 	},
 

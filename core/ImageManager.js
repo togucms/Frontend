@@ -88,10 +88,10 @@ App.ImageManager = Ext.extend(App.BaseClass, {
 				.attr('src', me.getSrc(id, format));
 		}
 	},
-	getImageInfo: function(id, callback, scope) {
+	getImageInfo: function(id, callback, scope, eOpts) {
 		scope = scope || window;
 		if(this.images[id]) {
-			return callback.call(scope, this.images[id]);
+			return callback.call(scope, this.images[id], eOpts);
 		}
 		
     	jQuery.ajax({
@@ -102,7 +102,7 @@ App.ImageManager = Ext.extend(App.BaseClass, {
     		},
     		success: jQuery.proxy(function(response) {
     			this.defineImage(id, response.media[0]);
-    			callback.call(scope, this.images[id]);
+    			callback.call(scope, this.images[id], eOpts);
     		}, this)
     	});
 		

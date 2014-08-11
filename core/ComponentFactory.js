@@ -19,7 +19,7 @@ along with Togu.  If not, see <http://www.gnu.org/licenses/>.
 
 App.ComponentFactory = Ext.extend(App.Factory, {
 	create: function(config) {
-		var className = config.partial ? "App.component.Component" : App.componentTypes[config.type].className;
+		var className = config.partial ? config.className : App.componentTypes[config.type].className;
 		
 		return this.instantiateClass(className, config);
 	}

@@ -24,6 +24,7 @@ App.Template = {
 	imageManager: null,
 	resourceManager: null,
 	debug : false,
+	blankImage: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
 	getId : function() {
 		return 'cmf-' + (this.ids++);
 	},
@@ -42,11 +43,11 @@ App.Template = {
 		return linkInfo[attrProperty];
 	},
 	
-	getImage : function(component, attrProperty, imageId) {
-		var image = this.imageManager.getSrc(imageId);
+	getImage : function(component, attrProperty, imageId, filter) {
+		var image = this.imageManager.getSrc(imageId, filter);
 		if(! image) {
 			console.error('no image found', component, imageId);
-			return 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+			return this.blankImage;
 		}
 		return image;
 	},
@@ -113,13 +114,16 @@ App.Template = {
 			prefix: prefix,
 			suffix: suffix
 		});
-		return prefix + this.getImage(component, attrProperty, this.variable(component, variable)) + suffix;
+		if(filter == "lazyload") {
+			return prefix + this.blankImage + suffix;
+		}
+		
+		return prefix + this.getImage(component, attrProperty, this.variable(component, variable), filter) + suffix;
 	},
 	link : function(component, attrProperty, prefix, variable, filter, suffix, nodeId) {
 		if(filter == "external") {
 			return this.attr.apply(this, arguments);
 		}
-		
 		component.bindUpdater(variable, {
 			method: 'link',
 			nodeId: nodeId,

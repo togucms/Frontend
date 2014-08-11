@@ -29,20 +29,19 @@ App.ResourceMgr = Ext.extend(Ext.util.Observable, {
 		return '_' + this.uniqueId++;
 	},
 	initCache : function(data) {
- 		var id, url, i, ln, controllers, controller;
+ 		var id;
 
 		for(id in data.models) {
 			this.models[id] = data.models[id];
 		}
 		for(id in data.links) {
-			this.pages[data.links[id]] = data.models[id];
-			this.links[id] = data.models[id];
-			
+			this.pages[this.models[id].url] = this.models[id];
+			this.setLink(this.models[id]);
 		}
 		this.imageManager.defineImages(data.images);
 	},
-	setLink: function(id, value) {
-		this.links[id] = value;
+	setLink: function(value) {
+		this.links[value.id] = value;
 	},
 	getLink: function(id) {
 		return this.links[id];
@@ -60,7 +59,7 @@ App.ResourceMgr = Ext.extend(Ext.util.Observable, {
     			id: id
     		},
     		success: jQuery.proxy(function(response) {
-    			this.setLink(id, response);
+    			this.setLink(response);
     			callback.call(scope, this.links[id]);
     		}, this)
     	});
@@ -70,8 +69,28 @@ App.ResourceMgr = Ext.extend(Ext.util.Observable, {
 	init : function() {
 	    this.initCache(window.jsData);
 	},
+	isPageLoaded: function(path) {
+		if(! this.pages[path]) {
+			return false;
+		}
+		var page = this.pages[path], 
+			section = this.getModel(page.section);
+		
+		if(! section) {
+			return false;
+		}
+		
+		while(section.sectionConfig) {
+			section = this.getModel(section.sectionConfig.parentSection);
+			if(! section) {
+				return false;
+			}
+		}
+		return true;
+	},
+	
 	loadPath : function(path) {
-    	if(this.pages[path]) {
+    	if(this.isPageLoaded(path)) {
     		return App.SectionMgr.initPath(this.pages[path], path);
     	}
     	
@@ -119,18 +138,7 @@ App.ResourceMgr = Ext.extend(Ext.util.Observable, {
 	},
 	
 	onModelsLoaded: function(callback, scope, response) {
-		var id;
-
-		for(id in response.data) {
-			this.models[id] = response.data[id];
-		}
-		
-		for(id in response.links) {
-			this.setLink(id, response.links[id]);
-		}
-		
-		this.imageManager.processImages(response.images);
-		
+		this.initCache(response);
 		callback.call(scope || window);
 	},
 	
