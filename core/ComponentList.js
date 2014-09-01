@@ -55,9 +55,9 @@ App.ComponentList = Ext.extend(Ext.extend(Array, Ext.util.Observable.prototype),
 	},
 	
 	onIdChanged: function(model, oldId, newId) {
+		this.fireEvent('idchanged', this, model, oldId, newId);
 		this.fireEvent('changed', this);
 	},
-
 	
 	pop: function() {
 		if(this.length > 0) {

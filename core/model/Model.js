@@ -139,6 +139,8 @@ App.model.Model = Ext.extend(App.BaseClass, {
 				data[fieldName] = me.get(fieldName);
 			}
 		}
+		data.type = me.type;
+		
 		return data;
 	},
 	
@@ -224,8 +226,9 @@ App.model.Model = Ext.extend(App.BaseClass, {
 	},
 	
 	setId: function(newId) {
+		var oldId = this.id;
 		this.id = newId;
-		this.fireEvent('idchanged', this.id, newId);
+		this.fireEvent('idchanged', this, oldId, newId);
 	},
 	loadSection: function(section) {
 		if(section.length == 0) {

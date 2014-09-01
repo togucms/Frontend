@@ -43,6 +43,7 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 		model.on('set', me.onSet, me);
 		model.on('remove', me.onRemove, me);
 		model.on('rearrange', me.onRearrange, me);
+		model.on('idchanged', me.onIdChanged, me);
 		
 		me.bus.on('entity.dd.start', me.onDDStart, me);
 		me.bus.on('entity.dd.end', me.onDDEnd, me);
@@ -54,15 +55,26 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 	},
 
 	onAdd: function(components, position) {
+		this.fireEvent('beforeadd', this, components, position);
 		this.add(components, position);
+		this.fireEvent('afteradd', this, components, position);
 	},
 	
 	onRemove: function(components, position) {
+		this.fireEvent('beforeremove', this, components, position);
 		this.remove(components, position);
+		this.fireEvent('afterremove', this, components, position);
 	},
 
 	onRearrange: function(components) {
+		this.fireEvent('beforerearange', this, components);
 		this.rearrange(components);
+		this.fireEvent('afterrearrange', this, components);
+	},
+	
+	onIdChanged: function(list, model, oldId, newId) {
+		this.index[newId] = this.index[oldId];
+		delete this.index[oldId];
 	},
 	
 	onSet: function(index, newValue, oldValue) {
