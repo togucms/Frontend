@@ -27,6 +27,7 @@ App.ImageManager = Ext.extend(App.BaseClass, {
 		me.images = {};
 		me.cachedImagesHolder = $('<div />')
 			.addClass('cache')
+			.addClass('hidden')
 			.appendTo(document.body)
 	},
 	getFormat: function(format) {
@@ -56,19 +57,18 @@ App.ImageManager = Ext.extend(App.BaseClass, {
 		return this.images[id][format].src; 
 	},
 	
-	setLoaded: function(id, format, element) {
-		this.images[id][format].loaded = true;
-		this.bus.fire('imageLoaded', id, format);
+	setLoaded: function(args, event) {
+		this.images[args.id][args.format].loaded = true;
+		this.bus.fireEvent('imageLoaded', args.id, args.format);
 	},
-
 	
 	onImageLoad: function(id, format, element) {
-		setTimeout($.proxy(this.setLoaded, id, format), 0);
+		setTimeout($.proxy(this.setLoaded, this, id, format), 0);
 		$(element).remove();
 	},
 	
 	isLoaded: function(id, format) {
-		format = me.getFormat(format);
+		format = this.getFormat(format);
 		return !! this.images[id][format].loaded;
 	},
 	

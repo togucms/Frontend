@@ -226,7 +226,11 @@ App.container.Container = Ext.extend(Ext.extend(Array, Ext.util.Observable.proto
 	},
 	
 	destroy: function() {
-		this.parent = null;
+		var me = this;
+		me.parent = null;
+		
+		me.bus.un('entity.dd.start', me.onDDStart, me);
+		me.bus.un('entity.dd.end', me.onDDEnd, me);
 	},
 	
 	setElementId: function(elementId) {

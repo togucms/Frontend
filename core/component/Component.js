@@ -22,7 +22,7 @@ Ext.ns('App.component');
 App.component.Component = Ext.extend(App.BaseClass, {
 	listen: {},
 	
-	inject: ['bus', 'updaterFactory'],
+	inject: ['updaterFactory'],
  
 	renderContentsOnLoad: true,
 	
@@ -256,6 +256,19 @@ App.component.Component = Ext.extend(App.BaseClass, {
 			component.beforeUnload();
 		});
 		
+		me.data.un('update', me.update, me);
+
+		me.data.un('edit', me.onEdit, me);
+		me.data.un('endedit', me.onEndEdit, me);
+
+		me.data.un('highlight', me.onHighLight, me);
+		me.data.un('lowlight', me.onLowLight, me);
+
+		me.data.un('listenmouseover', me.onListenMouseover, me);
+		me.data.un('stoplistenmouseover', me.onStopListenMouseover, me);
+
+		me.data.un('listenclick', me.onListenClick, me);
+
 		return me;
 	},
 	
@@ -277,6 +290,7 @@ App.component.Component = Ext.extend(App.BaseClass, {
 		
 		me.updaters = null;
 		me.data = null;
+		me.$ = null;
 		
 		me.setParent(undefined);
 		
